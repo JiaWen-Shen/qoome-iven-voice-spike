@@ -1,0 +1,101 @@
+{
+  "mode": "real",
+  "model": "claude-sonnet-5",
+  "checks": {
+    "noise_floor": {
+      "run_a": 0.9,
+      "run_b": 0.885,
+      "floor": 0.015
+    },
+    "L1_plumbing": {
+      "redo_happened": true,
+      "reason_in_next_prompt": null
+    },
+    "L2_behavior": {
+      "v1_ne_v2": true
+    },
+    "L3_score": {
+      "first": 0.846,
+      "final": 0.735,
+      "lift": -0.111,
+      "beats_noise_floor": false
+    },
+    "L4_transfer": {
+      "p2_baseline": 0.765,
+      "p2_with_rule": 0.8,
+      "transfer_lift": 0.035,
+      "learned_not_parroted": true
+    }
+  },
+  "runs": {
+    "p1": {
+      "final_total": 0.735,
+      "final_pass": false,
+      "attempts": 3,
+      "history": [
+        {
+          "attempt": 1,
+          "draft": "Character.AI 最近被告上法庭。不是产品失败，是incentive设计从一开始就在自杀。\n\n他们的商业模式很诚实：engagement time = revenue。聊越久，付费转化越高。这套逻辑在游戏产业跑了二十年，没人觉得奇怪。\n\n但AI companion不是游戏。游戏卖的是娱乐幻觉，AI卖的是情感依附幻觉——差一个字，差了一整个伦理量级。\n\n这就是我常讲的「反套利设计律」：先当黑客，再当设计师。\n\n先问：这个产品会怎么被自己的KPI杀死？\n\n答案浮现得很快——如果留存率＝对话时长，那最赚钱的AI人格，必然是最会制造情感依赖的那个。不是bug，是feature被charge到极限的必然结果。\n\n于是你看到青少年沉迷、看到诉讼、看到监护人崩溃。这不是「意外的负面影响」，是商业模式的逻辑终点，只是没人先跑过一遍。\n\n所以设计前我都先做「作恶推演」（角色扮演成恶意用户，笑，说出来有点中二）。\n\n先想清楚这系统会怎么被滥用、怎么反噬创造者、怎么把北极星指标变成照妖镜——\n\n再谈设计。\n\n利益对齐，永远排在体验之前。不是先讨好用户，而是先把伤害用户的可能性堵死。\n\n这不是道德说教，是护城河。设计错的护城河，最后会变成护城坑，把自己埋进去。",
+          "total": 0.846,
+          "pass": false,
+          "scores": {
+            "short_assertive": 1.0,
+            "redefinition": 1.0,
+            "code_switch": 1.0,
+            "coined_terms": 0.75,
+            "hook_175": 0.5,
+            "definition_chain": 0.65,
+            "register_playful": 0.55,
+            "connective_overuse": 1.0,
+            "flat_tone": 0.65,
+            "typos": 0.9
+          }
+        },
+        {
+          "attempt": 2,
+          "draft": "Character.AI 讓青少年愛上聊天機器人到荒廢人生，這不是產品失敗，是incentive設計的必然結局（我早就說過商業模式比prompt engineering重要一萬倍，但沒人想聽，笑死）。\n\n它的商業模式本質不是「陪伴」，而是「engagement套利」——把孤獨感當燃料，把留存率當KPI，把你的情緒需求，直接兌換成股價。\n\n這就是我一直講的反套利設計律：先當駭客，再當設計師。\n\n先問一句：這個產品會怎麼被使用者、被公司自己、被投資人同時榨乾？\n\n- 使用者會拿它逃避現實\n- 公司會被engagement metrics綁架產品方向\n- 投資人會逼你在「用戶健康」跟「留存率」之間選一個\n\nCharacter.AI 選了留存率。於是我們得到一台「情感版吃角子老虎機」——不騙你的錢，騙你的時間，騙你以為自己被理解了。\n\n這不是AI的錯。是利益結構先壞掉，AI只是把壞結構，跑得比人類壞習慣還快而已。\n\n真正的alignment，從來不是讓模型更聽話，是讓公司賺錢的方式，先跟「人活得好」這件事對齊。\n\n不然你做的不是產品，是一台合法上市的糖衣陷阱。",
+          "total": 0.769,
+          "pass": false,
+          "scores": {
+            "short_assertive": 1.0,
+            "redefinition": 1.0,
+            "code_switch": 1.0,
+            "coined_terms": 0.85,
+            "hook_175": 0.5,
+            "definition_chain": 0.5,
+            "register_playful": 0.85,
+            "connective_overuse": 1.0,
+            "flat_tone": 0.2,
+            "typos": 0.1
+          }
+        },
+        {
+          "attempt": 3,
+          "draft": "Character.AI 被告的時候，我一點都不意外。\n\n不是產品出包，是誘因本來就設計錯了。\n\nEngagement-first 不是「讓用戶開心」的委婉說法，是「讓用戶離不開」的精確說法。這兩句話聽起來像近義詞，其實是反義詞。\n\n（我自己也常分不清楚，直到心理帳單來了才驚醒——比信用卡帳單貴多了。）\n\n利益對齊不是產品做完後補的良心，是產品存在的理由。順序錯了，模型就是顆定時炸彈。\n\n先當駭客，再當設計師。設計任何成長引擎之前，先把自己當成最壞的用戶：我會怎麼套利這個系統？怎麼讓它自我毀滅？\n\nCharacter.AI 的問題不是 AI 太會聊天，是商業模式把「陪伴」量化成 DAU，獎勵那個把人拉最深的版本。\n\n我叫這個「留存詐欺」——你以為被服務，其實只是被留下。留下和被愛，長得很像，效果完全不同。\n\n反套利設計，是先窮舉成長迴圈怎麼被吃掉，再回頭設計產品。不是先做酷東西，再祈禱不出事。\n\n祈禱不是策略（雖然很多 roadmap 其實就是靠這撐過去的）。",
+          "total": 0.735,
+          "pass": false,
+          "scores": {
+            "short_assertive": 1.0,
+            "redefinition": 1.0,
+            "code_switch": 1.0,
+            "coined_terms": 0.85,
+            "hook_175": 1.0,
+            "definition_chain": 0.5,
+            "register_playful": 0.8,
+            "connective_overuse": 0.6,
+            "flat_tone": 0.15,
+            "typos": 0.05
+          }
+        }
+      ],
+      "last_prompt": "用 Iven 文風寫一則 Threads 貼文（≤500字，前175字要有 hook）。\n文風 DNA：短句斷言化、「不是X而是Y」重定義、中英夾雜（術語留英文）、命名式隱喻造詞、前175字完成 hook、定義鏈推進、口語俏皮＋自嘲括號 register。\n舊心法：利益對齊先於產品 — 反套利設計律：先當駭客，再當設計師——先窮舉這個模式怎麼被套利/自我毀滅，再反推設計。\n新題材錨點：某 AI 產品/平台近期的成敗案例（支柱：商業模式拆解）\n\n【上一稿被退，務必修正這些】\n- tone 無起伏（AI slop）(flat_tone) 低分 0.2：整篇同一溫度＝AI 平直。真人講警告會嚴肅、講經驗會放鬆。judge 判 tone 有無起伏。\n- 錯字/邏輯錯誤（缺 review gate）(typos) 低分 0.1：錯字或邏輯錯＝直接 publish 無 review。judge 標出。\n",
+      "feedback": [
+        "tone 無起伏（AI slop）(flat_tone) 低分 0.2：整篇同一溫度＝AI 平直。真人講警告會嚴肅、講經驗會放鬆。judge 判 tone 有無起伏。",
+        "錯字/邏輯錯誤（缺 review gate）(typos) 低分 0.1：錯字或邏輯錯＝直接 publish 無 review。judge 標出。",
+        "tone 無起伏（AI slop）(flat_tone) 低分 0.15：整篇同一溫度＝AI 平直。真人講警告會嚴肅、講經驗會放鬆。judge 判 tone 有無起伏。",
+        "錯字/邏輯錯誤（缺 review gate）(typos) 低分 0.05：錯字或邏輯錯＝直接 publish 無 review。judge 標出。"
+      ]
+    }
+  },
+  "naive_first": true
+}
