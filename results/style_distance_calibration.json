@@ -1,0 +1,99 @@
+{
+  "method": "char-ngram(2,3) cosine, leave-one-out centroid",
+  "rows": [
+    {
+      "id": "a1",
+      "label": "iven_tier_a",
+      "score": 0.603,
+      "sim_iven": 0.0434,
+      "sim_slop": 0.0285,
+      "text": "現代社會的運作邏輯，本質上是一場對人體交感神經系統的過度榨取。KPI、社群比較、生存焦慮——現代人無時無刻不處於應激狀態"
+    },
+    {
+      "id": "a2",
+      "label": "iven_tier_a",
+      "score": 0.52,
+      "sim_iven": 0.0361,
+      "sim_slop": 0.0333,
+      "text": "傳統金融的底層邏輯是「馬太效應」——資本永遠向頂端少數人集中。財聚，則民散。社會撕裂，生態枯竭。老子稱此為「人之道」：損"
+    },
+    {
+      "id": "a3",
+      "label": "iven_tier_a",
+      "score": 1.0,
+      "sim_iven": 0.0088,
+      "sim_slop": 0.0,
+      "text": "利用遊戲化機制的吸引力，給予適度的多巴胺與成就感，一步步引導會員修補殘破的身心。"
+    },
+    {
+      "id": "a4",
+      "label": "iven_tier_a",
+      "score": 0.666,
+      "sim_iven": 0.0139,
+      "sim_slop": 0.007,
+      "text": "莊子說，捕魚的竹筌是為了抓魚，抓到魚就可以忘了竹筌。在忘機的系統中，所有的 App 介面、綠幣獎勵、玄德積分、打卡任務，"
+    },
+    {
+      "id": "a5",
+      "label": "iven_tier_a",
+      "score": 0.264,
+      "sim_iven": 0.0095,
+      "sim_slop": 0.0265,
+      "text": "但遊覽車上要賣什麼，是與行程有關的，也與客人的屬性有關，所以是動態的，像是快閃店+體驗館的綜合展售。業績利潤怎麼算？供應"
+    },
+    {
+      "id": "a6",
+      "label": "iven_tier_a",
+      "score": 0.755,
+      "sim_iven": 0.0098,
+      "sim_slop": 0.0032,
+      "text": "省1元等於做10元業績。週轉及時、利潤好抓。受眾分流省廣告費。營銷活動企劃必備。將流量變成存量。資料就是店的底氣。"
+    },
+    {
+      "id": "s1",
+      "label": "slop",
+      "score": 0.08,
+      "sim_iven": 0.0143,
+      "sim_slop": 0.1635,
+      "text": "Character.AI 最近被告上法庭。不是产品失败，是incentive设计从一开始就在自杀。他们的商业模式很诚实："
+    },
+    {
+      "id": "s2",
+      "label": "slop",
+      "score": 0.147,
+      "sim_iven": 0.0332,
+      "sim_slop": 0.1922,
+      "text": "Character.AI 讓青少年愛上聊天機器人到荒廢人生，這不是產品失敗，是incentive設計的必然結局。它的商業"
+    },
+    {
+      "id": "s3",
+      "label": "slop",
+      "score": 0.099,
+      "sim_iven": 0.017,
+      "sim_slop": 0.1546,
+      "text": "Character.AI 被告的時候，我一點都不意外。不是產品出包，是誘因本來就設計錯了。Engagement-firs"
+    },
+    {
+      "id": "s4",
+      "label": "slop",
+      "score": 0.18,
+      "sim_iven": 0.0088,
+      "sim_slop": 0.0401,
+      "text": "我們致力於為每一位用戶提供最優質的服務體驗，透過不斷創新與精進，打造更美好的數位生活。無論您有任何需求，我們都將竭誠為您"
+    },
+    {
+      "id": "s5",
+      "label": "slop",
+      "score": 0.191,
+      "sim_iven": 0.0097,
+      "sim_slop": 0.041,
+      "text": "在這個快速變化的時代，企業必須擁抱數位轉型，才能在競爭激烈的市場中脫穎而出。透過導入 AI 技術，我們可以有效提升營運效"
+    }
+  ],
+  "iven_min": 0.264,
+  "iven_max": 1.0,
+  "slop_min": 0.08,
+  "slop_max": 0.191,
+  "gap": 0.073,
+  "separated": true
+}

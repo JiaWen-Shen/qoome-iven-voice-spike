@@ -56,9 +56,31 @@ LangGraph 狀態機：`draft → gate →(conditional) redo / pass`，回灌＝�
    - 結果存 `results/calibration.json`
 4. **B4** ⛔ 卡住——原計畫「用校準過 gate 重跑回灌」的前提（gate 校準過）沒成立（B3 分不開）。硬跑 B4 沒有意義，會是在沒校準的 gate 上重跑回灌，跟 spike 一開始 real-mode 撞到的天花板同一個問題，換個包裝而已。
 
-## Plan B 結論（2026-07-27）
+## B3.5：embedding-based 補測（`style_distance_calibrate.py`，2026-07-27，零依賴）
 
-B1→B3 做完後的結論跟 spike 最初的結論一致，只是證據更硬：**prompt-only judge（不管絕對打分還是 contrastive 比對）分不清「真 Iven」跟「表面規則對的 AI 模仿稿」**。這不是這次 rubric 沒調好，是 B3 用真的 Iven 語料＋真的 slop 語料實測出來的結果。**決策點交給 Iven**：要嘛接受 L5 只能靠人工盲測把關（不做自動 gate）、要嘛評估上 training-level（LoRA/Persona Vectors，需要更大量標註語料，golden-set.md 填完是起點）。純 prompt-engineering 這條路線這裡先停損。
+在判定「路線停損」之前，先測一個更便宜的問題：s1/s2 被 LLM judge 打高分，是「LLM judge 方法論本身有問題」，還是「這些 slop 語料在表面特徵上真的很像 Iven」？
+
+用字元 n-gram(2,3) 頻率向量 + cosine similarity（跟 StyleDistance 同類「風格向量距離」，但用統計 n-gram 代替訓練過的 neural embedding——網路裝不了 sentence-transformers/torch 時的零依賴替代），對 eval_set.json 同一批 11 條重跑：
+
+- **分得開 ✅**：Iven range [0.264, 1.0]，Slop range [0.08, 0.191]，**gap = +0.073，完全沒重疊**
+- s1（簡體字模仿稿）跟 s2/s3（繁體模仿稿）都在最低分區，跟通用企業模板 s4/s5 同一群，沒有任何一篇 slop 混進 Iven 的分數範圍
+- **這推翻了「表面特徵層級也分不開」的假設**——純統計層級的風格向量清楚分得開，代表 B3 的「分不開」問題更可能出在 LLM judge 這個判斷機制本身，不是語料真的無法區分
+
+⚠️ 誠實限制：n=11 樣本量小；字元 n-gram 會混到內容/主題訊號（不是純風格），不是真正訓練過的 style-only embedding；只跑一次沒有交叉驗證。
+
+## B3.6：held-out 重測，推翻 B3.5（`style_distance_heldout.py`，2026-07-27）
+
+B3.5 有個沒控制的變因：`iven_tier_a` 全講忘機/QB，`slop` 全講 Character.AI 訴訟——n-gram 分得開可能只是在抓「話題詞彙」不是「風格」。用兩篇今天 `--real` 生成、跟 slop 同一個 seed（同話題：AI 產品/平台成敗案例）的 held-out draft 重測：
+
+- `draft_clean`（gate 打 0.912、no_seed_leak=1.0，乾淨過關）→ style_score = **0.150（像 slop）**
+- `draft_leak`（gate 打 0.856、有逐字複製 leak）→ style_score = **0.213（像 slop）**
+- 對照：非 leave-one-out 的 Iven range [0.904, 1.000]，Slop range [0.017, 0.061]——兩篇 held-out 都貼著 slop 那端，離 Iven 範圍很遠
+
+**推翻 B3.5 的結論**：控制話題之後，n-gram 方法連「同話題下、人工判定寫得不錯的稿子」都判不出來，暴露它分得開純粹是話題詞彙差異，跟風格無關——這個零依賴統計代用品比 LLM judge 更不可靠，不能拿來替代判斷機制。
+
+## Plan B 結論（2026-07-27，B3.6 後）
+
+B1→B3 的原始結論站得住：**prompt-only judge（絕對打分或 contrastive）分不清真 Iven 跟表面規則對的 AI 模仿稿**，而且今天測試的「零成本替代方案」（字元 n-gram 風格距離）並沒有真的解決這個問題——它在無控制變因時看似分得開，控制話題後立刻現形是話題詞彙的假訊號。**決策點回到原本的位置，交給 Iven**：要嘛接受 L5 只能靠人工盲測把關、要嘛評估上 training-level（LoRA/Persona Vectors 或真正訓練過的 embedding model，golden-set.md 填完是起點）。如果還想再測一輪更嚴謹的 embedding 方法（真的裝 sentence-transformers/StyleDistance，非統計代用品），要記得**同時控制話題**才是有效測試，不然會重蹈今天 B3.5 的錯。
 
 L5「像不像本人」最終需 Iven 盲測，B 無法取代。
 
