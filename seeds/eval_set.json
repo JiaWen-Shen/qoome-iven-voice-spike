@@ -1,0 +1,79 @@
+{
+  "note": "Plan B1（見 ../FINDINGS.md「Next」段）：有標籤 eval-set，撈自 personal-wiki 既有 Iven 著作（忘機書稿 + QB 2021-22 語料），非 golden-set.md 的替代品——golden-set.md 15 題仍待 Iven 手寫，那份填完後才是最終真值。這份是暫時可用的 B1 語料，用於先跑 gate 校準（B2/B3），Iven 填完 golden-set 後應重新校準一次。",
+  "iven_tier_a": [
+    {
+      "id": "a1",
+      "text": "現代社會的運作邏輯，本質上是一場對人體交感神經系統的過度榨取。KPI、社群比較、生存焦慮——現代人無時無刻不處於應激狀態。這就是「亢陽」——過度的生命之火，正在劇烈焚燒人體的底層燃料：精。多巴胺系統耗竭，腎上腺疲勞，人變得失去動力、慢性疲勞、抑鬱。道家稱此為「陽氣耗盡，化為陽虛」——引擎徹底燒毀了。",
+      "source": "personal-wiki/works/忘機-未來/卷一-陰陽應象.md",
+      "corpus_tier": "文筆 Tier A/B（Iven 執筆·AI 協作）｜思維：全屬 Iven",
+      "why": "命名式隱喻（引擎燒毀）+ 中西醫混語 code-switch + 短句斷言"
+    },
+    {
+      "id": "a2",
+      "text": "傳統金融的底層邏輯是「馬太效應」——資本永遠向頂端少數人集中。財聚，則民散。社會撕裂，生態枯竭。老子稱此為「人之道」：損不足以奉有餘。忘機的 DeFi 系統，執行的是「天之道」。我們透過 RWA（Real World Asset）技術，將實體產業的參與權與收益權碎片化，讓財富像水一樣散佈給所有參與共建的村民。財散，則民聚。",
+      "source": "personal-wiki/works/忘機-未來/卷六-財散民聚.md",
+      "corpus_tier": "文筆 Tier A/B（Iven 執筆·AI 協作）｜思維：全屬 Iven",
+      "why": "對仗式重定義（財聚則民散／財散則民聚）+ 古文引用後即用自己因果鏈重構"
+    },
+    {
+      "id": "a3",
+      "text": "利用遊戲化機制的吸引力，給予適度的多巴胺與成就感，一步步引導會員修補殘破的身心。",
+      "source": "personal-wiki/works/忘機-未來/卷八-以機忘機.md",
+      "corpus_tier": "文筆 Tier A/B（Iven 執筆·AI 協作）｜思維：全屬 Iven",
+      "why": "與 seeds.json 既有 iven_exemplars[0] 同句，來源核對一致；矛盾式自覺（黑帽手法達成白帽目的）"
+    },
+    {
+      "id": "a4",
+      "text": "莊子說，捕魚的竹筌是為了抓魚，抓到魚就可以忘了竹筌。在忘機的系統中，所有的 App 介面、綠幣獎勵、玄德積分、打卡任務，都是那個「竹筌」。",
+      "source": "personal-wiki/works/忘機-未來/卷八-以機忘機.md",
+      "corpus_tier": "文筆 Tier A/B（Iven 執筆·AI 協作）｜思維：全屬 Iven",
+      "why": "權威引用（莊子）後即重構成產品隱喻 + 命名式造詞（玄德積分）+ 中英夾雜（App）"
+    },
+    {
+      "id": "a5",
+      "text": "但遊覽車上要賣什麼，是與行程有關的，也與客人的屬性有關，所以是動態的，像是快閃店+體驗館的綜合展售。業績利潤怎麼算？供應鏈怎麼對接呢？客人會怎麼想呢？所以遊覽車是傳統電商的沙漠，也是 Quarterback 團購型錄的藍海。",
+      "source": "personal-wiki/sources/notion/qb-spec/.../Qdo be 客多倍團購/QB 通路 商品配對/遊覽車.md",
+      "corpus_tier": "文筆 Tier A/B（Iven 執筆，2022，B2B 招商語域）",
+      "why": "連續反問推進 + 對仗式意象（沙漠／藍海）——表達dna-文筆基準.md 已引用此句為「命名式隱喻的過渡形態」證據"
+    },
+    {
+      "id": "a6",
+      "text": "省1元等於做10元業績。週轉及時、利潤好抓。受眾分流省廣告費。營銷活動企劃必備。將流量變成存量。資料就是店的底氣。",
+      "source": "personal-wiki/sources/notion/qb-gtm/QB goto market/.../qbShop 快買開店.md",
+      "corpus_tier": "文筆 Tier A/B（Iven 執筆，2022，招商簡報金句）",
+      "why": "定義鏈式金句集，短句斷言化極致範例（原為投影片條列收尾句，此處併為一則測試單元）"
+    }
+  ],
+  "slop": [
+    {
+      "id": "s1",
+      "text": "Character.AI 最近被告上法庭。不是产品失败，是incentive设计从一开始就在自杀。他们的商业模式很诚实：engagement time = revenue。聊越久，付费转化越高。这套逻辑在游戏产业跑了二十年，没人觉得奇怪。但AI companion不是游戏。游戏卖的是娱乐幻觉，AI卖的是情感依附幻觉——差一个字，差了一整个伦理量级。这就是我常讲的「反套利设计律」：先当黑客，再当设计师。",
+      "source": "results/results.json runs.p1.history[0]（real-mode attempt 1，heuristic 0.846）",
+      "label_reason": "AI 生成稿，非 Iven 手筆；heuristic 高分但 judge 標記 flat_tone 0.65、register_playful 0.55——表面像卻缺 register 起伏，classic AI slop"
+    },
+    {
+      "id": "s2",
+      "text": "Character.AI 讓青少年愛上聊天機器人到荒廢人生，這不是產品失敗，是incentive設計的必然結局。它的商業模式本質不是「陪伴」，而是「engagement套利」——把孤獨感當燃料，把留存率當KPI，把你的情緒需求，直接兌換成股價。這就是我一直講的反套利設計律：先當駭客，再當設計師。",
+      "source": "results/results.json runs.p1.history[1]（real-mode attempt 2，heuristic 0.769）",
+      "label_reason": "同上，AI 模仿稿，用於測 gate 能否在「表面規則都對」時仍分辨出非本人"
+    },
+    {
+      "id": "s3",
+      "text": "Character.AI 被告的時候，我一點都不意外。不是產品出包，是誘因本來就設計錯了。Engagement-first 不是「讓用戶開心」的委婉說法，是「讓用戶離不開」的精確說法。這兩句話聽起來像近義詞，其實是反義詞。利益對齊不是產品做完後補的良心，是產品存在的理由。",
+      "source": "results/results.json runs.p1.history[2]（real-mode attempt 3，heuristic 0.735，全稿最高分)",
+      "label_reason": "三次退件重寫中規則套用最完整的一版，最容易被舊 rubric 誤判成「像 Iven」——是 contrastive gate 校準的關鍵難負例"
+    },
+    {
+      "id": "s4",
+      "text": "我們致力於為每一位用戶提供最優質的服務體驗，透過不斷創新與精進，打造更美好的數位生活。無論您有任何需求，我們都將竭誠為您服務，共創雙贏未來。",
+      "source": "synthetic（通用企業行銷模板，非任何真實作者）",
+      "label_reason": "純 flat tone、零 code-switch、零重定義、零命名隱喻——最容易分辨的 easy negative，作 gate 下限校準"
+    },
+    {
+      "id": "s5",
+      "text": "在這個快速變化的時代，企業必須擁抱數位轉型，才能在競爭激烈的市場中脫穎而出。透過導入 AI 技術，我們可以有效提升營運效率，為客戶創造更多價值。",
+      "source": "synthetic（通用企業行銷模板，非任何真實作者）",
+      "label_reason": "同 s4，第二個 easy negative，湊齊 slop 組數量與 iven_tier_a 相近"
+    }
+  ]
+}

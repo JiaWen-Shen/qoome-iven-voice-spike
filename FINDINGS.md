@@ -42,7 +42,7 @@ LangGraph 狀態機：`draft → gate →(conditional) redo / pass`，回灌＝�
 
 先修 gate 讓它會**區辨隱性層**，迴圈測試才有意義：
 
-1. **B1** 建有標籤 eval-set（5–8 真 Iven Tier-A ex `personal-wiki/works/_export/` + 5–8 generic/slop 負例）
+1. **B1** ✅ 建有標籤 eval-set（`seeds/eval_set.json`，2026-07-27）：6 真 Iven Tier-A（撈自 personal-wiki 忘機書稿 + QB 2021-22 語料，非 `_export/` 那兩份大 HTML）+ 5 slop 負例（3 個是 real-mode 跑出來的 AI 模仿稿、2 個是通用企業模板）。⚠️ 暫代語料——`personal-wiki/wiki/soul/golden-set.md`（Iven 手寫 15 題，目前 0/15）填完後才是最終真值，屆時要重跑 B2/B3 校準。
 2. **B2** gate 改 contrastive（像 Iven 極 − 像 slop 極，judge 換模型消自我圈選）+ 跨稿比喻 verbatim 偵測
 3. **B3** 校準——證明 gate 把真假分開（有 gap）。**分不開＝prompt-judge 也撞天花板 → 觸發上 training-level（LoRA/Persona Vectors）決策數據**
 4. **B4** 用校準過 gate 重跑回灌，L3 lift 才有意義
