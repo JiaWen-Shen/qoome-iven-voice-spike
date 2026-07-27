@@ -33,13 +33,15 @@ def main():
     ap.add_argument("--real", action="store_true")
     ap.add_argument("--stub", action="store_true")
     ap.add_argument("--model", default=None)
+    ap.add_argument("--judge-model", default=None,
+                    help="B2：judge 用的模型，預設跟 draft 不同（消自我圈選），見 SPIKE_JUDGE_MODEL")
     a = ap.parse_args()
     mode = "real" if a.real else "stub"
     if mode == "real" and not os.environ.get("ANTHROPIC_API_KEY"):
         sys.exit("ERROR: --real 需 export ANTHROPIC_API_KEY")
 
     p1, p2 = SEEDS[0], SEEDS[1]
-    report = {"mode": mode, "model": a.model, "checks": {}, "runs": {}}
+    report = {"mode": mode, "model": a.model, "judge_model": a.judge_model, "checks": {}, "runs": {}}
 
     # naive_first：首稿故意用通用 prompt（無 style pack）＝模擬未調校 AI slop，
     # 逼 gate 退件 → 回灌 style pack 缺口 → 觀察真 LLM 有無被救回。
@@ -47,14 +49,14 @@ def main():
     NAIVE = mode == "real"
 
     # ---- 主迴圈：p1 跑一輪（含退件重寫）----
-    r1 = run_once(p1, mode=mode, max_attempts=3, model=a.model, naive_first=NAIVE)
+    r1 = run_once(p1, mode=mode, max_attempts=3, model=a.model, judge_model=a.judge_model, naive_first=NAIVE)
     report["runs"]["p1"] = r1
     report["naive_first"] = NAIVE
     h = r1["history"]
 
     # ---- 噪音地板：同 seed、不回灌、跑兩次，看 attempt-1 分數飄動 ----
-    fa = run_once(p1, mode=mode, max_attempts=1, model=a.model, naive_first=NAIVE)["history"][0]["total"]
-    fb = run_once(p1, mode=mode, max_attempts=1, model=a.model, naive_first=NAIVE)["history"][0]["total"]
+    fa = run_once(p1, mode=mode, max_attempts=1, model=a.model, judge_model=a.judge_model, naive_first=NAIVE)["history"][0]["total"]
+    fb = run_once(p1, mode=mode, max_attempts=1, model=a.model, judge_model=a.judge_model, naive_first=NAIVE)["history"][0]["total"]
     floor = round(abs(fa - fb), 3)
     report["checks"]["noise_floor"] = {"run_a": fa, "run_b": fb, "floor": floor}
 
@@ -82,8 +84,8 @@ def main():
 
     # ---- Exp2 遷移：p1 抽的規則套沒看過的 p2，first-draft 分數升沒升 ----
     rule = "redefinition（不是X而是Y重定義）低分：套招牌逆向共識句式 不是X而是Y。short_assertive（短句斷言化）低分：句子縮短。code_switch：術語留英文。"
-    base2 = run_once(p2, mode=mode, max_attempts=1, model=a.model, naive_first=NAIVE)["history"][0]["total"]
-    treat2 = run_once(p2, mode=mode, max_attempts=1, model=a.model, naive_first=NAIVE, preset_feedback=[rule])["history"][0]["total"]
+    base2 = run_once(p2, mode=mode, max_attempts=1, model=a.model, judge_model=a.judge_model, naive_first=NAIVE)["history"][0]["total"]
+    treat2 = run_once(p2, mode=mode, max_attempts=1, model=a.model, judge_model=a.judge_model, naive_first=NAIVE, preset_feedback=[rule])["history"][0]["total"]
     report["checks"]["L4_transfer"] = {"p2_baseline": base2, "p2_with_rule": treat2,
                                        "transfer_lift": round(treat2 - base2, 3),
                                        "learned_not_parroted": treat2 > base2}

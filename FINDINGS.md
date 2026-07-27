@@ -43,9 +43,22 @@ LangGraph 狀態機：`draft → gate →(conditional) redo / pass`，回灌＝�
 先修 gate 讓它會**區辨隱性層**，迴圈測試才有意義：
 
 1. **B1** ✅ 建有標籤 eval-set（`seeds/eval_set.json`，2026-07-27）：6 真 Iven Tier-A（撈自 personal-wiki 忘機書稿 + QB 2021-22 語料，非 `_export/` 那兩份大 HTML）+ 5 slop 負例（3 個是 real-mode 跑出來的 AI 模仿稿、2 個是通用企業模板）。⚠️ 暫代語料——`personal-wiki/wiki/soul/golden-set.md`（Iven 手寫 15 題，目前 0/15）填完後才是最終真值，屆時要重跑 B2/B3 校準。
-2. **B2** gate 改 contrastive（像 Iven 極 − 像 slop 極，judge 換模型消自我圈選）+ 跨稿比喻 verbatim 偵測
-3. **B3** 校準——證明 gate 把真假分開（有 gap）。**分不開＝prompt-judge 也撞天花板 → 觸發上 training-level（LoRA/Persona Vectors）決策數據**
-4. **B4** 用校準過 gate 重跑回灌，L3 lift 才有意義
+2. **B2** ✅ code 完成（2026-07-27，stub 跑過確認 pipeline 沒壞）：
+   - `_contrastive_judge()`（`iven_voice_graph.py`）新增 `contrastive_fit` 維度（weight 3）：不問「這篇夠不夠格」，問「比較像 `eval_set.json` 的 Iven 範例還是 slop 範例」，直接對照真實 exemplar 而非抽象 rubric。
+   - judge 模型與 draft 模型分離（`run_once(judge_model=...)`，預設 `SPIKE_JUDGE_MODEL=claude-haiku-4-5-20251001`，跟 draft 預設 `claude-sonnet-5` 不同支），消自我圈選。
+   - `h_no_seed_leak()` 新增 `no_seed_leak` 維度（heuristic，weight 1）；2026-07-27 real-mode 實測抓到一次真 leak（draft 逐字複製 gist 的「反套利設計律」），但當時只是加權平均一個維度，稀釋不掉，0.856 照樣過門檻——**後補硬性否決**：leak 出現直接 `pass=False`（不管加權總分多高），見 `score_draft()` 的 `veto` 邏輯。已用 `--real` 重跑一次驗證沒有 leak 時不會誤判（no_seed_leak=1.0 時正常過關）。
+3. **B3** ✅ 跑了（`calibrate.py`，2026-07-27，judge=claude-haiku-4-5-20251001，真 API）——**分不開 ❌**：
+   - Iven 範圍 [0.85, 0.95]；Slop 範圍 [0.0, 0.95]；gap = -0.1（負值＝重疊）
+   - 6 個真 Iven 全過 0.85，但 slop 裡 s1/s2（兩篇 AI 模仿稿，其中 s1 還是簡體字）也打到 0.85/0.95，跟真 Iven 分不開
+   - 反而 s3（原本設計成「最容易誤判成 Iven 的難負例」）跟 s4/s5（通用企業模板）都準確判 0.0——**gate 挑得出「明顯不像」，但挑不出「表面規則對、細節不對」的那種**
+   - **這就是 FINDINGS 一直講的天花板，contrastive 包裝也沒繞過去**：判斷依據還是 prompt-only judge，跟舊絕對打分同一個 ceiling，只是換了問法。**觸發 training-level（LoRA/Persona Vectors）決策數據**，純 prompt-engineering 這條路線該停損了
+   - 已知限制（誠實記錄，未修）：只跑 1 次/題（無重複投票去噪）、只測 1 支 judge 模型（haiku）、few-shot 範例截斷到 140 字——這些都可能是雜訊來源，但即使如此，s1 被打 0.85/0.95 這麼高，落差大到不太可能純粹是雜訊
+   - 結果存 `results/calibration.json`
+4. **B4** ⛔ 卡住——原計畫「用校準過 gate 重跑回灌」的前提（gate 校準過）沒成立（B3 分不開）。硬跑 B4 沒有意義，會是在沒校準的 gate 上重跑回灌，跟 spike 一開始 real-mode 撞到的天花板同一個問題，換個包裝而已。
+
+## Plan B 結論（2026-07-27）
+
+B1→B3 做完後的結論跟 spike 最初的結論一致，只是證據更硬：**prompt-only judge（不管絕對打分還是 contrastive 比對）分不清「真 Iven」跟「表面規則對的 AI 模仿稿」**。這不是這次 rubric 沒調好，是 B3 用真的 Iven 語料＋真的 slop 語料實測出來的結果。**決策點交給 Iven**：要嘛接受 L5 只能靠人工盲測把關（不做自動 gate）、要嘛評估上 training-level（LoRA/Persona Vectors，需要更大量標註語料，golden-set.md 填完是起點）。純 prompt-engineering 這條路線這裡先停損。
 
 L5「像不像本人」最終需 Iven 盲測，B 無法取代。
 

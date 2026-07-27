@@ -18,6 +18,9 @@ from langgraph.graph import StateGraph, START, END
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STYLE_PACK = json.load(open(os.path.join(HERE, "style_pack.json"), encoding="utf-8"))
+_EVAL_SET_PATH = os.path.join(HERE, "seeds", "eval_set.json")
+EVAL_SET = (json.load(open(_EVAL_SET_PATH, encoding="utf-8"))
+            if os.path.exists(_EVAL_SET_PATH) else {"iven_tier_a": [], "slop": []})
 
 CONNECTIVES = ["說穿了", "坦白講", "其實", "基本上", "問題是", "更粗的是", "話說回來"]
 
@@ -26,7 +29,7 @@ CONNECTIVES = ["說穿了", "坦白講", "其實", "基本上", "問題是", "�
 def _sentences(text: str) -> List[str]:
     return [s for s in re.split(r"[。！？!?\n]+", text) if s.strip()]
 
-def h_short_assertive(t: str) -> float:
+def h_short_assertive(t: str, seed: Dict[str, Any] = None) -> float:
     ss = _sentences(t)
     if not ss: return 0.0
     avg = sum(len(s) for s in ss) / len(ss)
@@ -34,24 +37,36 @@ def h_short_assertive(t: str) -> float:
     if avg >= 90: return 0.0
     return round((90 - avg) / 35, 3)
 
-def h_redefinition(t: str) -> float:
+def h_redefinition(t: str, seed: Dict[str, Any] = None) -> float:
     return 1.0 if re.search(r"不是.{1,24}?[，,、].{0,6}?(而是|才是|是)", t) else 0.0
 
-def h_code_switch(t: str) -> float:
+def h_code_switch(t: str, seed: Dict[str, Any] = None) -> float:
     return 1.0 if len(re.findall(r"[A-Za-z][A-Za-z0-9\-]{1,}", t)) >= 1 else 0.0
 
-def h_hook_175(t: str) -> float:
+def h_hook_175(t: str, seed: Dict[str, Any] = None) -> float:
     if not t.strip(): return 0.0
     first = t.strip().split("\n", 1)[0]
     head = t.strip()[:175]
     hooky = ("？" in head) or ("?" in head) or len(first) <= 40
     return 1.0 if (len(first) <= 60 and hooky) else 0.5
 
-def h_connective_overuse(t: str) -> float:
+def h_connective_overuse(t: str, seed: Dict[str, Any] = None) -> float:
     n = sum(t.count(c) for c in CONNECTIVES)
     if n == 0: return 1.0
     if n <= 3: return 0.6
     return 0.0
+
+def h_no_seed_leak(t: str, seed: Dict[str, Any] = None) -> float:
+    """跨稿 verbatim 偵測：草稿不該逐字重現 prompt 給的 old_heart name/gist 片段
+    ——那是抄提示，不是真的轉譯成 Iven 語感（見 FINDINGS.md B2）。"""
+    if not seed: return 1.0
+    old = seed.get("old_heart", {})
+    clauses = []
+    for field in ("name", "gist"):
+        for p in re.split(r"[、，。：:—\s]+", old.get(field, "")):
+            if len(p) >= 6:
+                clauses.append(p)
+    return 0.0 if any(c in t for c in clauses) else 1.0
 
 HEURISTIC = {
     "short_assertive": h_short_assertive,
@@ -59,23 +74,29 @@ HEURISTIC = {
     "code_switch": h_code_switch,
     "hook_175": h_hook_175,
     "connective_overuse": h_connective_overuse,
+    "no_seed_leak": h_no_seed_leak,
 }
 # stub 對 llm-only 維度的 placeholder（真跑由 judge 覆蓋）
 STUB_LLM_DEFAULT = {"coined_terms": 0.5, "definition_chain": 0.6,
-                    "register_playful": 0.6, "flat_tone": 0.7, "typos": 1.0}
+                    "register_playful": 0.6, "flat_tone": 0.7, "typos": 1.0,
+                    "contrastive_fit": 0.6}
 
 
-def score_draft(draft: str, call: Callable, mode: str) -> Dict[str, Any]:
-    """回傳 {scores:{dim:float}, total:float, pass:bool, reasons:[str]}."""
+def score_draft(draft: str, judge_call: Callable, mode: str,
+                seed: Dict[str, Any] = None) -> Dict[str, Any]:
+    """回傳 {scores:{dim:float}, total:float, pass:bool, reasons:[str]}.
+    judge_call 應與 draft 用的 call 不同模型（B2：消自我圈選，見 FINDINGS.md）。"""
     dims = STYLE_PACK["dimensions"]
     scores: Dict[str, float] = {}
     if mode == "real":
-        scores = _llm_judge(draft, call)  # judge 打全部維度
+        scores.update(_llm_judge(draft, judge_call))
+        if any(d["detect"] == "contrastive" for d in dims):
+            scores["contrastive_fit"] = _contrastive_judge(draft, judge_call)
     # heuristic 維度一律用 code 覆蓋（deterministic，比 judge 可信）
     for d in dims:
         k = d["key"]
         if d["detect"] == "heuristic":
-            scores[k] = HEURISTIC[k](draft)
+            scores[k] = HEURISTIC[k](draft, seed)
         elif k not in scores:
             scores[k] = STUB_LLM_DEFAULT.get(k, 0.6)
     num = sum(d["weight"] * scores[d["key"]] for d in dims)
@@ -83,21 +104,42 @@ def score_draft(draft: str, call: Callable, mode: str) -> Dict[str, Any]:
     total = round(num / den, 3)
     reasons = [f'{d["label"]}({d["key"]}) 低分 {scores[d["key"]]}：{d["guide"]}'
                for d in dims if scores[d["key"]] < 0.5]
+    # 硬性否決：逐字抄舊心法提示＝抄提示不是轉譯，加權平均稀釋不掉，直接否決
+    # （2026-07-27 發現：real-mode 首稿 total 0.856 過門檻，但逐字複製了 gist 的
+    # 「反套利設計律」，靠加權分完全看不出來，見 FINDINGS.md B2）。
+    veto = scores.get("no_seed_leak", 1.0) < 1.0
     return {"scores": scores, "total": total,
-            "pass": total >= STYLE_PACK["pass_threshold"], "reasons": reasons}
+            "pass": (total >= STYLE_PACK["pass_threshold"]) and not veto,
+            "veto": veto, "reasons": reasons}
 
 
-def _llm_judge(draft: str, call: Callable) -> Dict[str, float]:
-    dims = STYLE_PACK["dimensions"]
+def _llm_judge(draft: str, judge_call: Callable) -> Dict[str, float]:
+    """絕對打分（rubric-based），只丟 detect=='llm' 的維度給 judge。"""
+    dims = [d for d in STYLE_PACK["dimensions"] if d["detect"] == "llm"]
     rubric = "\n".join(f'- {d["key"]} ({d["label"]}, polarity {d["polarity"]}): {d["guide"]}'
                        for d in dims)
     sys = ("你是嚴格的文風評審。對照 rubric 給每個維度 0.0–1.0（1.0=完全符合期望；"
            "polarity '-' 的維度：越少出現該問題分越高）。只回 JSON：{\"dim_key\": float, ...}")
     user = f"RUBRIC:\n{rubric}\n\nDRAFT:\n{draft}\n\n只回 JSON。"
-    raw = call(sys, user)
+    raw = judge_call(sys, user)
     m = re.search(r"\{.*\}", raw, re.S)
     obj = json.loads(m.group(0)) if m else {}
     return {d["key"]: float(obj.get(d["key"], 0.6)) for d in dims}
+
+
+def _contrastive_judge(draft: str, judge_call: Callable) -> float:
+    """B2 對比式打分：不問「夠不夠格」，問「比較像 eval_set 的哪一邊」。
+    用獨立 judge_call（跟 draft 模型不同）避免自我圈選。"""
+    ex = ([f'- [Iven] {e["text"][:140]}' for e in EVAL_SET.get("iven_tier_a", [])]
+          + [f'- [Slop] {e["text"][:140]}' for e in EVAL_SET.get("slop", [])])
+    sys = ("你是嚴格的文風裁判，只回一個 0.0–1.0 的浮點數，不要其他文字。"
+           "1.0＝這篇草稿的語感、句式、隱喻手法跟 [Iven] 範例同一掛，完全不像 [Slop] 範例；"
+           "0.0＝這篇草稿讀起來就是 [Slop] 範例那種通用 AI/行銷腔，跟 [Iven] 範例完全不像。"
+           "只看語感與句式手法，不管主題內容是否相同。")
+    user = f"參考範例：\n" + "\n".join(ex) + f"\n\n待評草稿：\n{draft}\n\n只回一個數字。"
+    raw = judge_call(sys, user)
+    m = re.search(r"[01](\.\d+)?", raw)
+    return float(m.group(0)) if m else 0.5
 
 
 # ---------- LLM 呼叫 ----------
@@ -161,6 +203,7 @@ class S(TypedDict, total=False):
     verdict: bool
     history: List[Dict[str, Any]]
     _call: Any
+    _judge_call: Any
 
 
 def _build_draft_prompt(seed: Dict[str, Any], feedback: List[str], naive: bool = False) -> str:
@@ -192,7 +235,7 @@ def draft_node(state: S) -> S:
 
 
 def gate_node(state: S) -> S:
-    res = score_draft(state["draft"], state["_call"], state["mode"])
+    res = score_draft(state["draft"], state["_judge_call"], state["mode"], state.get("seed"))
     hist = state.get("history", []) + [{
         "attempt": state["attempts"], "draft": state["draft"],
         "total": res["total"], "pass": res["pass"], "scores": res["scores"]}]
@@ -220,12 +263,18 @@ def build_graph():
 
 
 def run_once(seed: Dict[str, Any], mode: str = "stub", max_attempts: int = 3,
-             model: str = None, preset_feedback: List[str] = None,
+             model: str = None, judge_model: str = None,
+             preset_feedback: List[str] = None,
              naive_first: bool = False) -> Dict[str, Any]:
     call = make_caller(mode, model)
+    # B2：judge 用跟 draft 不同的模型，消自我圈選（同一支模型批改自己的作業會偏寬）。
+    # stub 模式沒有真 judge（heuristic 已接管），共用同一顆假 caller 即可。
+    jm = judge_model or os.environ.get("SPIKE_JUDGE_MODEL", "claude-haiku-4-5-20251001")
+    judge_call = make_caller(mode, jm) if mode == "real" else call
     graph = build_graph()
     init: S = {"seed": seed, "mode": mode, "max_attempts": max_attempts,
-               "feedback": list(preset_feedback or []), "_call": call, "history": [],
+               "feedback": list(preset_feedback or []), "_call": call,
+               "_judge_call": judge_call, "history": [],
                "naive_first": naive_first}
     out = graph.invoke(init)
     return {"final_total": out["total"], "final_pass": out["verdict"],
