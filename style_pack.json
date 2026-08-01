@@ -28,6 +28,25 @@
     {"key": "contrastive_fit", "label": "對比像 Iven／像 slop", "layer": "隱性", "polarity": "+", "detect": "contrastive", "weight": 3,
      "guide": "對照 seeds/eval_set.json 的真 Iven Tier-A 範例與 slop 負例，判斷這篇草稿的語感/句式手法整體上更接近哪一邊，不看主題內容。1.0=毫無疑問是 Iven 語域；0.0=毫無疑問是通用 AI slop。"},
     {"key": "no_seed_leak", "label": "非逐字抄舊心法提示", "layer": "顯性", "polarity": "+", "detect": "heuristic", "weight": 1,
-     "guide": "草稿不應逐字重現 prompt 給的 old_heart name/gist 片段——那是抄提示，不是轉譯成 Iven 語感。出現 ≥6 字逐字重疊即扣分。"}
-  ]
+     "guide": "草稿不應逐字重現 prompt 給的 old_heart name/gist 片段——那是抄提示，不是轉譯成 Iven 語感。出現 ≥6 字逐字重疊即扣分。"},
+
+    {"key": "layered_reasoning", "label": "層層推導（非快速斷言）", "layer": "隱性", "polarity": "+", "detect": "llm", "weight": 3,
+     "guide": "Iven 2026-08-01 盲測明訂：『我比較會層層推導，不會很快就斷言結論。』這條跟 short_assertive/redefinition 的『快速斷言』矛盾——Iven 判準優先。judge 判斷是否有 3+ 層推理鏈（前提→中介→結論），而非直接跳到斷言。<3 層扣分。⚠️ 這條可能與 short_assertive 產生張力，未來 style_pack v2 需重新平衡兩軸。"},
+
+    {"key": "narrative_examples", "label": "故事、舉例（非條列論證）", "layer": "隱性", "polarity": "+", "detect": "llm", "weight": 3,
+     "guide": "Iven 2026-08-01 盲測 p1/p3 明訂偏好『用故事、舉例來說明』，而非乾論述。judge 判斷是否含具體 case/scenario/human moment（非抽象概念堆疊）。純條列或純抽象論證扣分。"},
+
+    {"key": "throughline_insight", "label": "貫穿主軸洞見/視角", "layer": "隱性", "polarity": "+", "detect": "llm", "weight": 3,
+     "guide": "Iven 2026-08-01 盲測 p1 明訂三個 draft 全被打槍原因：『都比較像是套版的文字，缺少一個貫穿主軸洞見或視角』。judge 判斷是否有一個主軸洞見貫穿全文（非拼湊 3-4 個 unrelated points），且該洞見是 non-obvious（非「AI 會取代人類」這種業界共識）。缺主軸洞見或洞見平庸扣分。"},
+
+    {"key": "daishi_narrative_style", "label": "「大時叔叔」敘事結構", "layer": "隱性", "polarity": "+", "detect": "llm", "weight": 2,
+     "guide": "Iven 2026-08-01 盲測 p2 自我承認的敘事風格錨點：『我內容自己的完形卻是像「大時叔叔」那樣的敘事結構和方法』。 ⚠️ 未來訓練前先讀 golden-set.md 該題（未填、Karen 提名待 Iven 冷啟）。judge 判斷是否含類似大時叔叔的敘事節奏（角色/場景/推進）。空 dim 直到 golden-set 補完、暫給中性分。"}
+  ],
+
+  "_iven_blind_test_2026_08_01": {
+    "note": "Iven 主 signal、Karen 補充。see FINDINGS.md §B5",
+    "iven_gate_priority": ["layered_reasoning", "narrative_examples", "throughline_insight", "daishi_narrative_style"],
+    "karen_early_filter": ["no_seed_leak", "flat_tone", "typos"],
+    "known_tension": "short_assertive vs layered_reasoning 相反——Iven 判準優先、下次 style_pack v2 校準時 short_assertive weight 需降至 1 或轉為條件性加權（例：文末斷言 OK、開頭斷言 NG）"
+  }
 }

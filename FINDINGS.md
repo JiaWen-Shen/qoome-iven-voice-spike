@@ -93,3 +93,76 @@ cp env.sample .env     # 填入 ANTHROPIC_API_KEY（見 iven-keys.md）
 python run.py --stub   # 免 key，驗管線
 python run.py --real --model claude-sonnet-5   # 真 LLM
 ```
+
+---
+
+## §B5 盲測第一輪：Iven 主判 + Karen 補充（2026-08-01）
+
+B3.6 之後 Plan B 決策卡在 Iven 未表態。2026-08-01 Karen 直接把 blind test ship 出來（`qoome-edge-share/eval-iven-voice-blind-test-v0.html`，3 題 × 3 mode = 9 draft、`gen_blind_test_drafts.py` 產出），Karen 跟 Iven 各盲測一輪。**回饋以 Iven 為主、Karen 為補充觀察**。
+
+### 測試設置
+
+- **3 題目**（seeds/seeds.json p1/p2/p3 沿用）：利益對齊 × AI 產品失敗 / 重組式機會 × 過剩市場 / HITL 分工律 × agent 熱潮
+- **3 mode**：real（spike full loop、B2 gate default、naive_first=False）/ naive_prof（Baseline #2：「以商業專家身份寫」無 Iven persona）/ naive_threads（Baseline #5：Threads 高互動格式但無特定 persona）
+- **draft data**：`blind_test_drafts.json`（都是 claude-sonnet-5 產出）
+- **rater**：Karen、Iven 具名盲測、A/B/C 順序前端 seeded shuffle（不同 rater 看不同順序）
+
+### 結果矩陣
+
+| Mode | Karen 平均 | Iven 平均 |
+|---|---:|---:|
+| naive_prof（Baseline #2） | 4.33 | 3.67 |
+| naive_threads（Baseline #5） | 3.00 | 3.33 |
+| **real**（spike full loop） | **2.67** | **3.00** |
+
+**兩人 pick real 為「最像」的次數**：Karen 0/3、Iven 1/3（p1，且打分僅 3、不 confident）
+**兩人一致**：**都未強偏 real**
+
+### Iven 3 題 rationale 摘要（主 signal）
+
+**p1**：「三個都是**論點像**，推論法確實可能會是我的邏輯路徑，但**在文筆上比較不像**，我比較會**層層推導**，甚至**用故事、舉例**來說明，**不會很快就斷言結論**。這三個都比較像是**套版的文字，缺少一個貫穿主軸洞見或視角**。」
+
+**p2**：「論點上都像是我會推導的，連我自己都被吸引，覺得很有洞察力。A（naive_prof）的寫法夠粗暴吸睛，但我反而不太擅長。B（naive_threads）這種**娓娓道來的模式，比較像我會寫的，但拿來做社群貼文會太軟**。C（real）的寫法不是我欣賞的，也不是我擅長的寫法。**這裡有個很有意思的自我觀察**：**我自己雖然像 B 這型，但我內容自己的完形卻是像「大時叔叔」那樣的敘事結構和方法**。」
+
+**p3**：「論點都像，文筆部份 A（naive_prof）雖然最像，但**其實我比較欣賞 C（naive_threads）的輕鬆說故事的敘事寫法**。」
+
+### Iven 4 個核心 signal（主結論）
+
+Iven 3 題都指向同一個結構性 gap——**論點層 gate 通過但文筆層沒過**：
+
+1. **層層推導**（非快速斷言）：Iven 明訂反對「太快斷言結論」；spike 現有 style_pack `short_assertive`（短句斷言化）weight 2 反而是**加分項**、跟 Iven 判準相反
+2. **故事、舉例**（非條列論證）：Iven p1/p3 都提到偏好敘事寫法、spike 現有 dim 無此軸
+3. **貫穿主軸洞見/視角**（非套版）：Iven p1「三個都缺主軸洞見」= 三個 draft 都達不到；spike gate 現有 dim 無此高階判準
+4. **大時叔叔敘事結構**：Iven p2 自我承認的敘事風格錨點；**這是 wiki 未捕捉的關鍵語料 gap**——是 golden-set 該優先補的錨點
+
+### 意義（對 Plan B (a) vs (b) 決策）
+
+- **(a) 人工盲測可行性低**：Iven 自己承認判準飄（「我像 B、但完形像大時叔叔」）+ Karen/Iven 判準不對稱（Karen 嚴 spread 2-5、Iven 寬集中 3-5）→ 兩個 rater 都測不出穩定 signal
+- **(b) training-level 支持強**：三題都出現「論點像但文筆不夠好」= 完全對齊 B3.6「prompt-only 天花板」結論
+- **spike 現有 style_pack 校準方向錯**：`short_assertive` 加分項跟 Iven「層層推導」判準相反、`redefinition` 招牌斷言句式 Iven 也標「太快斷言不像我」
+
+**決策方向**：走 (b) training-level、但**新錨點 = 大時叔叔敘事**，golden-set 該優先補這條、不再冷啟從零
+
+### Karen 5 個補充觀察（次要 signal、可作為 spike gate 早期過濾）
+
+Karen 判斷嚴、抓到 Iven rationale 未提的表面 pattern。作為 **spike gate 早期過濾**用（篩 obvious bad output）、不作為主判準：
+
+1. **self-note 括號**（p1 real「（我剛發明的詞，先收下）」）：Iven 不會用旁白 flag 自己造詞
+2. **內文提到自己名字舉例**（p1 real 用 Iven/Qoome 舉例）：Iven 是觀察者位置、不是示範者
+3. **AI 味濃**（p2/p3）：Iven 沒明說「AI 味」但 rationale 說「套版」＝概念重疊
+4. **問題開場**（Karen p2 加分點）：對齊 spike `hook_175`
+5. **混合 signal**（real 有 Iven 元素但同時踩反模式）
+
+**Karen signal 跟 Iven signal 的關係**：Karen 抓「這稿有明顯 AI 印子」；Iven 抓「這稿沒到我的完形」。**Karen 適合當 pre-filter、Iven 判準是 gold standard**——但 Iven gold standard 靠盲測不 scalable（判準飄+成本高），該轉 training-level。
+
+### Plan B 修正結論（2026-08-01 收斂）
+
+- **確認走 (b) training-level**、放棄 (a) 人工盲測（Iven 判準飄+成本高）
+- **新錨點 = 大時叔叔敘事**（golden-set 冷啟卡的 blocker 找到破口）
+- **style_pack 需重新校準**：`short_assertive` / `redefinition` 這些現有 dim 跟 Iven 主 signal 相反，需新增 `layered_reasoning` / `narrative_examples` / `throughline_insight` / `daishi-narrative-style` 4 dim 覆蓋 Iven 主判準
+
+### 下次動作
+
+1. `style_pack.json` 加 4 新 dim（本次 PR 一起做）
+2. `personal-wiki/wiki/soul/golden-set.md` 補「大時叔叔敘事」題目模板 3-5 題（Karen 提名 schema、Iven 冷啟填 body）
+3. 走 (b) training-level 路線正式啟動、golden-set 累到 15 題後跑 LoRA baseline 試驗
