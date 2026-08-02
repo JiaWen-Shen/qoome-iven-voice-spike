@@ -69,7 +69,7 @@ def gen_naive_prof(seed):
         f"帶到「{seed['old_heart']['name']}」這個觀點：{seed['old_heart']['gist']}\n"
     )
     r = client.messages.create(
-        model=MODEL, max_tokens=4096,
+        model=MODEL, max_tokens=8192,
         system="你是一位商業專家，寫作專業、清晰、有洞察力。",
         messages=[{"role": "user", "content": prompt}],
     )
@@ -109,7 +109,7 @@ def gen_real(seed):
         f"- 不要提到『大時叔叔』/『尾崎秀實』/『Iven』/『忘機』這些名字本身——只採用他們的敘事骨架與精神\n"
     )
     r = client.messages.create(
-        model=MODEL, max_tokens=4096,
+        model=MODEL, max_tokens=8192,
         system=system,
         messages=[{"role": "user", "content": prompt}],
     )
