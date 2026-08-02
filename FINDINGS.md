@@ -166,3 +166,66 @@ Karen 判斷嚴、抓到 Iven rationale 未提的表面 pattern。作為 **spike
 1. `style_pack.json` 加 4 新 dim（本次 PR 一起做）
 2. `personal-wiki/wiki/soul/golden-set.md` 補「大時叔叔敘事」題目模板 3-5 題（Karen 提名 schema、Iven 冷啟填 body）
 3. 走 (b) training-level 路線正式啟動、golden-set 累到 15 題後跑 LoRA baseline 試驗
+
+---
+
+## §B6 盲測第二輪 v2 結果（2026-08-01 傍晚）+ v3 目標系統性轉向（2026-08-02）
+
+### v2 盲測結果（2026-08-01 22:55 Iven 提交後定稿）
+
+3 題 × 2 mode（real / naive_prof）× 2 rater（Karen / Iven）。表面結論：**naive_prof 完勝、real 全輸**——兩人 6/6 都覺得 naive_prof 才像 Iven。
+
+若只看 pick，會誤判 v2 的 4 新 dim（layered_reasoning / narrative_examples / throughline_insight / daishi_narrative_style）+ 大時叔叔錨點方向錯了。
+
+### v2 隱藏 signal（改寫全部結論）
+
+Iven 三題 rationale 都自揭 **pick（像現在）跟欣賞（想成為）分離**：
+
+| 題 | Iven pick（像我） | Iven 欣賞（我要的手法） |
+|---|---|---|
+| p1 專業資產化 | A = naive_prof | B = **real** |
+| p2 商業模式 | B = naive_prof | A = **real** |
+| p3 判斷力 | B = naive_prof | A = **real** |
+
+Iven 原話（p3）：「A 的視角及情境切入法是我欣賞的，但敘事的口氣實在是拗口，不像是人在講話。」
+
+**3/3 都欣賞 real（吃大時叔叔錨點的版本）**——他心裡想成為的聲音就是 real 這條線、只是覺得 v2 real 稿本身「拗口」執行沒到位。
+
+### 目標系統性轉向（Karen 2026-08-02 決策）
+
+**v0-v2**：追 present-self（clone 現在的 Iven）——metric =「像不像現在」
+**v3 起**：追 aspirational-self（Iven 想成為的樣子）——metric =「你想不想寫成這樣」
+
+為什麼轉向：
+- 若 Iven 現況已夠好、就不需要 spike。spike 存在意義本來就是幫他長成想成為的樣子
+- v2 real 全輸不代表方法錯、代表**評分維度錯**（拿 present metric 判 aspirational method）
+- 大時叔叔錨點方向 confirmed 對——3/3 都欣賞，只需修 executor 品質
+
+### v3 setup
+
+- **4 題 × 4 pillar**（p1 商業/p2 HTP 專業/p3 私域/p4 生活觀察）—— 覆蓋度 up、測跨題材穩定性
+- **real mode**：吃 aspirational_exemplar_pool_v3.json 4 條 exemplar（Karen 代挑：忘機卷八「向善的機巧」/ 卷二「大惑易性」/ SCM book / 大時叔叔敘事）+ 保留大時叔叔錨點；**不走 gate loop**（gate rubric 是 present metric、跟 aspirational 目標不對齊）
+- **naive_prof mode**：完全同 v2（baseline 不動）
+- **雙評分 rubric**：每題 score1（像現在）+ score2（想成為）+ pick sanity check + rationale。**主 metric = score2**、score1 只當觀察
+
+### v3 hypothesis
+
+- **success**：score2 real 勝 naive_prof ≥ 3/4 題 → (b) training-level + 大時叔叔錨點方向確認、收工去 personal-wiki golden set / Threads Editorial Desk Phase 0
+- **partial**：score2 real 勝 2/4 → 方向對但 exemplar 挑得沒對到位、v4 換 Iven 更點名的段落
+- **fail**：score2 real 未穩勝 → 錨點素材迭代 or 承認 aspirational 假設本身有問題
+- **score1 依然 naive_prof 全勝** → **正常，不算 fail**（想成為 ≠ 現在，這正是 spike 存在的原因）
+- ⛔ **反面警訊**：若 Iven rationale 說「real 型的我也不想寫」→ aspirational 假設本身有問題，錨點方向偏離他真實嚮往
+
+### v3 ship 狀態（2026-08-02）
+
+- Spike repo `3f985eb` seeds + exemplar pool + gen script、`aee8017` max_tokens 4096→8192
+- Edge-share repo `30fc17c` HTML + workflow + answers stub、`7bdd494` 8 個 draft
+- 頁面：https://jiawen-shen.github.io/qoome-edge-share/eval-iven-voice-blind-test-v3.html
+- 4 題 real 命名式概念全命中：「解牛式解耦」/「多巴胺義肢」/「暗轉介，明分潤」/「半鎖陳列」，無「大時叔叔/Iven/忘機」名字 leak
+- 待 Karen 自測 → DM Iven
+
+### v3 開放問題（待 Iven 確認）
+
+1. Iven 願自選 3-5 段 aspirational reference 取代 Karen 代挑？
+2. 4 題題材覆蓋度夠？有想加的 pillar？
+3. 雙評分 rubric 負擔可接受？（v2 是單 pick + 單分，v3 變 pick + 兩分 + rationale）
