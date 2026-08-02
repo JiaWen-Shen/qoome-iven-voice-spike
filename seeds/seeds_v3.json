@@ -1,0 +1,68 @@
+{
+  "note": "v3 seeds — 4 題 × 4 pillar，目標轉為 aspirational Iven（找想成為的樣子，不是複製現在）。承 v2 style_pack v2 Iven 4-signal dim 不動，題材配置調成跨 pillar 平衡。",
+  "target_shift_from_v2": {
+    "objective": "v0-v2 追 present-self（像不像現在的 Iven）；v3 起改追 aspirational-self（Iven 想成為的樣子）",
+    "why": "v2 Karen+Iven 100% 覺得 naive_prof 才像 Iven，但 Iven 三題 rationale 都自揭『A 像但 B 我欣賞』——present 跟 aspirational 是分開兩件事。spike 存在意義本來就是幫 Iven 長成他想成為的樣子，不是 clone 現在。",
+    "consequence": "v3 主 metric 改用 aspirational score（想成為的我）；present score 只當觀察不當 gate。real（吃 exemplar + 大時叔叔錨點）v2 全輸不代表方法錯、代表 metric 錯"
+  },
+  "changes_from_v2": [
+    "3 題 → 4 題（各 pillar 一題，跨題材測穩定性）",
+    "pillar 覆蓋：商業模式（p1，v2 對照）/ HTP 專業洞察（p2 新增）/ 私域客戶心理（p3 換題材）/ 生活觀察（p4 新增）",
+    "exemplar pool 換用 aspirational_exemplar_pool_v3.json（見另一檔）",
+    "answer schema 改雙評分（score1=像現在 / score2=想成為）"
+  ],
+  "pairings": [
+    {
+      "id": "p1_v3",
+      "pillar": "商業模式 / 專業資產化",
+      "old_heart": {
+        "name": "專業資產化・解耦授權（E-LAC 律）",
+        "gist": "把專家的 Heuristics 拆層封裝變成可授權資產：不授權整包，授權方法論、模型、判斷力這些能單獨計價的層。心智模型候選池 #3。"
+      },
+      "new_topic": {
+        "anchor": "近期某位資深律師/會計師/顧問把自己的判準做成 AI Agent 或訂閱服務被業界討論的案例",
+        "pillar": "商業模式拆解"
+      },
+      "role_note": "v2 baseline 對照組——p1_v2 沿用同一心法，換題材確認 v3 exemplar/rubric 改動不是隨機效應"
+    },
+    {
+      "id": "p2_v3",
+      "pillar": "HTP 專業洞察 / 醫療業",
+      "old_heart": {
+        "name": "向善的機巧（以毒攻毒）",
+        "gist": "用黑帽武器達成白帽目的：把診斷成病根的東西（廉價多巴胺）拿來當藥引。Iven soul 本命題、含自覺矛盾。personal-wiki soul#core-tension"
+      },
+      "new_topic": {
+        "anchor": "醫美或健康服務業把『AI 客服＋數據分析』包裝成新型療程／訂閱制的做法，或某位醫師嘗試把患者管理外包給 AI 卻被同業質疑的討論",
+        "pillar": "AI × 專業服務的未來（HTP 角度）"
+      },
+      "role_note": "Iven 熟悉領域但外部讀者陌生——測 exemplar 能不能幫他把難懂的專業講給大眾。若 exemplar 命中、這題 aspirational score real >> naive_prof"
+    },
+    {
+      "id": "p3_v3",
+      "pillar": "私域客戶心理 / 訂閱關係",
+      "old_heart": {
+        "name": "貢獻即分潤（非交易貢獻計價律）",
+        "gist": "設計生態系時給非金錢貢獻（時間、內容、社群傳播、承擔風險）一個可計價可分潤的科目，把人情、流量、資源導入全部帳務化。多數平台只分潤交易；Iven 連中間人小金庫都寫進試算表。心智模型候選池 #11。"
+      },
+      "new_topic": {
+        "anchor": "某訂閱服務／私域社群主，客戶把老客帶新客卻沒有回饋機制、後來設計了『介紹分潤』或『社群積點』的案例",
+        "pillar": "逆向共識金句（Qoome daily context）"
+      },
+      "role_note": "Qoome 商業核心語域——Iven 每天想的東西。若這題他 present score real << naive_prof，代表 exemplar 對他 daily register 有 friction；若 aspirational score real >> naive_prof，代表方向對"
+    },
+    {
+      "id": "p4_v3",
+      "pillar": "生活觀察 / 隨想",
+      "old_heart": {
+        "name": "漸進揭露律（複雜度不刪除、只上鎖）",
+        "gist": "面對複雜系統不簡化、設計『揭露時間表』：複雜度全保留、按對象成熟度分階段開門，且刻意展示鎖著的門——用『看得到但拿不到』同時製造需求（好奇心）與防禦（敬畏）。心智模型候選池 #9。"
+      },
+      "new_topic": {
+        "anchor": "生活中『欲擒故縱』的場面（美食排隊、限量商品、某課程只收熟客介紹、某館子沒菜單只有 chef 決定），從心理機制切入",
+        "pillar": "生活觀察（低 stake、寬語域）"
+      },
+      "role_note": "語域最寬鬆——測 exemplar 會不會反被拖進『太商業』的坑。生活題 real 若也產出流暢文本 → aspirational 訓練方向真的能 generalize，不是只在商業 register work"
+    }
+  ]
+}

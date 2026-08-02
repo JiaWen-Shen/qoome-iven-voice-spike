@@ -1,0 +1,51 @@
+{
+  "note": "v3 aspirational exemplar pool — Iven 自己執筆、Karen 判定為 aspirational-hit 的參考段落。用來取代 v2 eval_set.json 中的 iven_tier_a（v2 那組是『他過去平均聲音』，v3 這組是『他嚮往的聲音』）。",
+  "target_shift_from_v2": "v0-v2 exemplar 追『Iven default 平均聲音』；v3 exemplar 改追『Iven 自己看重、想擴大的聲音』。若 Iven 有空自選、覆蓋這份；否則 karen_fallback 也可跑",
+  "selected_by": "karen_fallback",
+  "selection_criteria": [
+    "命名式概念（『向善的機巧』『大惑易性』『失真』——這是 Iven 招牌手法、v2 exemplar 沒充分抽出）",
+    "throughline 洞見貫穿整段（不是拼湊多個 point、有一個主軸 idea）",
+    "對比推進（陰陽/太極、大鵬 vs 小雀——Iven 邏輯骨架必備）",
+    "自覺矛盾/自嘲（『把診斷成病根的東西當藥引』——Iven soul 特徵，v2 沒抓）",
+    "含大時叔叔敘事錨點（人物化場景、多層時間軸疊加、對比式量化警句）"
+  ],
+  "iven_replace_when_ready": "Iven 若自選，改 selected_by='iven'，並在 exemplars[].source_note 標『Iven 點名』",
+  "exemplars": [
+    {
+      "id": "asp_v3_e1",
+      "source_file": "personal-wiki/works/忘機-未來/卷八-以機忘機.md",
+      "source_section": "壹 節 — 向善的機巧",
+      "corpus_tier": "Tier A/B（Iven 執筆 · AI 協作 · 思維全屬 Iven）",
+      "why_aspirational": "命名式概念『向善的機巧』+ 自覺矛盾（多巴胺當藥引）+ 引經據典（莊子 · 得魚忘荃）——這是 Iven soul 招牌手法，v0-v2 exemplar 沒抓出這種『帶自嘲張力的重定義』",
+      "text": "莊子說，捕魚的竹簃是為了抓魚，抓到魚就可以忘了竹簃。在忘機的系統中，所有的 App 介面、綠幣獎勵、玄德積分、打卡任務，都是那個「竹簃」。\n\n我們深知現代人已經病了，無法立刻要求他們「放下一切，立地修真」。因此，我們設計了一套「向善的機巧」。利用遊戲化機制的吸引力，給予適度的多巴胺與成就感，一步步引導會員修補殘破的身心。\n\n當會員最終透過這套系統找回了「真我」，達到了身心靈的絕對自由時，這個系統本身就可以被「忘卻」了。這，就是「忘機」文明最深層的浪漫。",
+      "signal_dims_hit": ["coined_terms", "redefinition", "throughline_insight", "narrative_examples"]
+    },
+    {
+      "id": "asp_v3_e2",
+      "source_file": "personal-wiki/works/忘機-未來/卷二-歸0尋真.md",
+      "source_section": "壹 節 — 大惑易性",
+      "corpus_tier": "Tier A/B（Iven 執筆 · AI 協作）",
+      "why_aspirational": "『大惑易性』/『失真』/『原廠設定』三個命名式概念一次到齊 + 對比推進（大鵬 vs 小雀）+ 主軸洞見貫穿（我們不是生病、只是失真）——Iven aspirational voice 的 archetype",
+      "text": "莊子在《逍遙遊》中描繪了飛越九萬里的大鵬鳥，與穿梭在蓬蒿之間的小雀。傳統世俗的成功學——資本主義的單一標準——永遠在歌頌大鵬、貶低小雀。它逼迫所有天生神經系統敏銳、適合細膩連結的「小雀體質」，去跳崖學習大鵬鳥的九萬里飛行。\n\n這種違背先天基因與神經元設計藍圖的強迫行為，莊子稱為「易性」——喪失本性。在現代醫學中，這被稱為「表觀遺傳學（Epigenetics）的惡性表達」。當個體長期處於違背原廠設定的環境中，會產生極大的心理防禦與自律神經衝突，最終引發基因層面的病變與免疫系統的錯亂——請想想自體免疫疾病的機制。\n\n我們不是生病了。我們只是「失真」了。",
+      "signal_dims_hit": ["coined_terms", "redefinition", "layered_reasoning", "throughline_insight", "narrative_examples", "code_switch"]
+    },
+    {
+      "id": "asp_v3_e3",
+      "source_file": "personal-wiki/sources/books/scm-book/02-practice.md",
+      "source_section": "供應鏈評量的內涵（節錄）",
+      "corpus_tier": "Tier A（Iven 純手寫、2002）",
+      "why_aspirational": "SCM 時期 B2B 專業語域——他 20 年前的表達 DNA baseline。看得到現在還在用的『兩點式歸納 + 對比句 + 具體/抽象並置』骨架，但語感更沉穩、少 slop connective。當作 v3 aspirational reference 中的『技術/專業寫作』一極",
+      "text": "供應鏈管理之所以能協助企業得到上述的效益，簡單的說是在於兩點：其一，供應鏈管理更強調事前規劃的重要性，因此使用許多數學模型及演算法則以達成供需以及產銷的最適化管理決策規劃。這些模型與法則原本可能已是眾所皆知，然而人腦的演算能力有時而窮，所以通常需仰賴資訊科技的促成。其二，與上、下游的商務夥伴建構協同商務運作的機制，用以即時交換有意義的相關資訊，或相互即時觸發有關的商務流程。\n\n實踐供應鏈管理的重要成功關鍵即在於，企業組織能確實執行計劃再配合實況資訊回饋機制以機動調整計劃（Re-Plan），決策規劃與資訊回饋兩者間形成良性循環，如此則企業營運作業的每個步驟都能謀定而後動，進而提升整體營運效率。",
+      "signal_dims_hit": ["layered_reasoning", "definition_chain", "code_switch"]
+    },
+    {
+      "id": "asp_v3_e4",
+      "source_file": "qoome-iven-voice-spike/sources/daishi/narrative-analysis.md (excerpt) + 珍珠港-transcript.txt",
+      "source_section": "大時叔叔敘事——尾崎秀實開場",
+      "corpus_tier": "Reference（非 Iven 筆，但 Iven 2026-08-01 盲測 p2 rationale 自認『我內容自己的完形卻是像大時叔叔那樣的敘事結構』——他 aspirational 錨點）",
+      "why_aspirational": "Iven 自己欽點的敘事範本。v2 已用、v3 保留——他 3/3 都欣賞 real（吃大時叔叔錨點的）版本",
+      "text": "這天下午，教室裡坐著一群十五六歲的日本少年，他們穿著制服、戴著整齊的學生帽，正在聽用日語上的課。\n\n這間教室裡呢，有一個孩子，每天從這道牆的這一邊走進來，放學再走出去。日子久了，他開始琢磨一件事：憑什麼我生下來就可以在牆的這一邊？\n\n他叫尾崎秀實，那一年他 15 歲。\n\n7 大手法：（1）人物化場景開場（具體場景 + 五感細節）（2）視角切入（先給人物、再給名字、再給時代坐標）（3）問句推進節奏（4）對比式量化警句（5）多層時間軸疊加（6）主軸洞見穿越（7）人物=命題",
+      "signal_dims_hit": ["daishi_narrative_style", "narrative_examples", "throughline_insight"]
+    }
+  ]
+}
