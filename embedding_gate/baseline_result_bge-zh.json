@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "model": "BAAI/bge-small-zh-v1.5",
+    "technique": "輕量版（pretrained cosine，no fine-tuning）",
+    "positive_corpus": "seeds/eval_set.json iven_tier_a (n=6)",
+    "negative_corpus": "seeds/eval_set.json slop (n=5)",
+    "held_out_n_pairs": 10,
+    "held_out_n_texts": 20,
+    "held_out_topics_overlap_with_corpus": false,
+    "exit_criterion": "AUROC > 0.75",
+    "auroc": 0.55,
+    "passed": false
+  },
+  "per_item": [
+    {
+      "topic_id": "p1",
+      "version": "v1",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.7617,
+      "sim_to_slop": 0.8331,
+      "score": -0.0714
+    },
+    {
+      "topic_id": "p1",
+      "version": "v1",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7619,
+      "sim_to_slop": 0.833,
+      "score": -0.0711
+    },
+    {
+      "topic_id": "p2",
+      "version": "v1",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.7493,
+      "sim_to_slop": 0.7271,
+      "score": 0.0222
+    },
+    {
+      "topic_id": "p2",
+      "version": "v1",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7458,
+      "sim_to_slop": 0.7162,
+      "score": 0.0296
+    },
+    {
+      "topic_id": "p3",
+      "version": "v1",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6975,
+      "sim_to_slop": 0.7422,
+      "score": -0.0447
+    },
+    {
+      "topic_id": "p3",
+      "version": "v1",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7082,
+      "sim_to_slop": 0.7446,
+      "score": -0.0364
+    },
+    {
+      "topic_id": "p1_v2",
+      "version": "v2",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.7196,
+      "sim_to_slop": 0.7384,
+      "score": -0.0187
+    },
+    {
+      "topic_id": "p1_v2",
+      "version": "v2",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7047,
+      "sim_to_slop": 0.7221,
+      "score": -0.0174
+    },
+    {
+      "topic_id": "p2_v2",
+      "version": "v2",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.7477,
+      "sim_to_slop": 0.7607,
+      "score": -0.013
+    },
+    {
+      "topic_id": "p2_v2",
+      "version": "v2",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7586,
+      "sim_to_slop": 0.7735,
+      "score": -0.0149
+    },
+    {
+      "topic_id": "p3_v2",
+      "version": "v2",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.7419,
+      "sim_to_slop": 0.6329,
+      "score": 0.109
+    },
+    {
+      "topic_id": "p3_v2",
+      "version": "v2",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7794,
+      "sim_to_slop": 0.6925,
+      "score": 0.0868
+    },
+    {
+      "topic_id": "p1_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6883,
+      "sim_to_slop": 0.6837,
+      "score": 0.0046
+    },
+    {
+      "topic_id": "p1_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7362,
+      "sim_to_slop": 0.77,
+      "score": -0.0338
+    },
+    {
+      "topic_id": "p2_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6986,
+      "sim_to_slop": 0.6562,
+      "score": 0.0424
+    },
+    {
+      "topic_id": "p2_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7238,
+      "sim_to_slop": 0.7249,
+      "score": -0.0011
+    },
+    {
+      "topic_id": "p3_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.7331,
+      "sim_to_slop": 0.646,
+      "score": 0.087
+    },
+    {
+      "topic_id": "p3_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.7876,
+      "sim_to_slop": 0.6943,
+      "score": 0.0933
+    },
+    {
+      "topic_id": "p4_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6834,
+      "sim_to_slop": 0.6025,
+      "score": 0.0809
+    },
+    {
+      "topic_id": "p4_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.755,
+      "sim_to_slop": 0.697,
+      "score": 0.058
+    }
+  ]
+}

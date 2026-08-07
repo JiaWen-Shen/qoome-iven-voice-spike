@@ -229,3 +229,49 @@ Iven 原話（p3）：「A 的視角及情境切入法是我欣賞的，但敘�
 1. Iven 願自選 3-5 段 aspirational reference 取代 Karen 代挑？
 2. 4 題題材覆蓋度夠？有想加的 pillar？
 3. 雙評分 rubric 負擔可接受？（v2 是單 pick + 單分，v3 變 pick + 兩分 + rationale）
+
+---
+
+## §B7 收工結論（2026-08-07）
+
+v3 score2 real 3/4 命中 success 門檻（決策脈絡見 Vault `02_Projects/Qoome-Edge-Console/24-Iven-Voice-Spike-Shutdown-and-Next-Steps-2026-08-05.md`）。2026-08-05 用戶明確：不再 v4，spike 收工、產物外化、下一步分批執行（批次 1-8，見上述 plan「執行順序」段）。以下記錄批次 1-5 實際完成狀況——**部分結果跟 plan 原估不同，如實記錄，不美化**。
+
+### 批次 1-3（純檔案，全部完成）
+
+- **14 rationale → 30 principle**：`rationale_to_principles.md`（v0 4 訪談 + v1 3 + v2 3 + v3 4，R1-R14 全出處可溯）
+- **style_pack v0 → v1**：dims 16→22，新增 6 維（`vantage_point_entry`/`dialectic_counterintuitive`/`structure_density_hybrid`/`vocalization_ease`/`argument_tension`/`no_self_reference`），每 dim 補 register 欄位
+- **exemplar pool v3 → v4**：4→8 段，新增反覆辯證+反直覺（`卷六-財散民聚`/`卷二-歸0尋真`）與生動故事寫法（`卷八-以機忘機` 場景 A/B）兩方向，全部取自既有 Iven Tier-A/B corpus
+- **training_data/**：`preference_pairs.jsonl`（**實際 10 pair，非原估 12-20**——v0 訪談無比較 draft 不產 pair，v1 p1 三方皆弱訊號不勉強造對，沒有為湊數字灌水）+ `tier_annotations.jsonl`（5 條）+ `principle_signals.jsonl`（30 條全量）+ `tier_a_corpus/` + `negative_corpus/`
+- **意外發現**：交叉查證 order_map 時，發現 `FINDINGS.md` 本節 §B5 把 v1 p3 Iven rationale 引用的「C」誤標成「naive_threads」，實際應為「real」——已在 `training_data/README.md`「已知問題」段記錄，`FINDINGS.md` 本體暫未回改（誤標反而讓原結論更成立，不是削弱）
+
+### 批次 2（skill 骨架，完成）
+
+`~/dotclaude/skills/iven-voice-generator/` 建好（SKILL.md + references/ 5 檔 + scripts/gen.py），`--dry-run` 驗證過 prompt 組裝邏輯，**未做過真實 API 生成測試**（本 session 無 key）。**Ship-to-Iven 具體形式尚未決定**——目前只是 Karen 本地開發位置。
+
+### 批次 4（軌道 C，⚠️ 部分完成，誠實記錄負面結果）
+
+Route 3 embedding gate PoC（`embedding_gate/`）：
+- **原估「需 GPU/雲、幾小時」不準確**——pretrained cosine baseline 免費、CPU、幾分鐘跑完，GPU/雲成本只發生在 fine-tune 那一步
+- **Baseline 沒過門檻**：`all-MiniLM-L6-v2` AUROC=0.47（近乎隨機）、`BAAI/bge-small-zh-v1.5` AUROC=0.55（略優於隨機），跑兩個 model 排除「選錯 model」的解釋，結論收斂：pretrained embedding 抓不到 Iven 風格訊號，門檻 0.75 遠未達
+- **Contrastive fine-tune 未執行，理由是資料量不足**：中量版門檻「幾百 pair」，批次 3 實際只有 10 pair，硬做只會 memorize、不是真訊號——跟這輪 baseline 沒過門檻的判斷邏輯一致，都是「不硬調出假訊號」（呼應本檔開頭 B3 就立下的原則）
+- **軌道 C 現況＝blocked，非失敗**：重新啟動條件見 `embedding_gate/README.md`
+
+### 批次 5（personal-wiki 回灌，⚠️ 部分完成）
+
+- ✅ `wiki/soul/表達dna-文筆基準.md` append v3 命名式隱喻外部驗證段（4 題全命中「解牛式解耦」「多巴胺義肢」「暗轉介，明分潤」「半鎖陳列」，無來源名字 leak）
+- ✅ `wiki/soul/golden-set.md` append E 組外部佐證段（**未動 Iven 待填欄**，golden-set 仍 0/15，明確記錄此為最大 bottleneck、case-4 editorial-loop 是解法）
+- ✅ `wiki/soul/candidate-mental-models/aspirational-shift.md` 新建（`structure_density_hybrid` 訊號候選，誠實記錄目前只有 1 domain，未達 nuwa 三重驗證跨域門檻，且發現此檔分類跟 `心智模型-候選池.md` 的「論證骨架」型 rubric 不完全吻合——這是表達層訊號，硬套心智模型驗證框架會失焦，已在檔案內註記）
+- ⛔ **`soul/dist/style-pack.md` 未建**——讀 `soul/dist/README.md` 發現既有明文前提「尚未編譯，前置條件：golden-set 填完，才有基線可比」，本輪不違反這條 gate。L3 source-of-truth 遷移（skill/spike references/ 改 symlink 指向 personal-wiki）**因此無法在本輪完成**，`iven-voice-generator/SKILL.md` 仍標記「批次 5 後才遷移」，實際上要等 golden-set 前提解除才能遷移
+- **ship-to-Iven 具體形式**：待用戶決定，尚未執行
+
+### 產物外化位置（現況，非原計畫理想狀態）
+
+- `~/dotclaude/skills/iven-voice-generator/`（skill 骨架，Karen 本地開發位置，ship 形式未定）
+- `qoome-iven-voice-spike/training_data/`（10 pair，weight-opt 累積起點，距 5K-50K 門檻仍差 3 個 order of magnitude）
+- `qoome-iven-voice-spike/embedding_gate/`（軌道 C baseline 已跑，中量版 fine-tune blocked）
+- Vault `02_Projects/Qoome-Edge-Console/24-*.md`（本 spike 收工執行計畫，含批次 1-5 完成筆記）
+- `personal-wiki/wiki/soul/`（表達 DNA + golden-set 外部佐證 + 候選訊號，**L3 dist 未建**）
+
+### 重量版 flag（沿用，未變動）
+
+Karen 未來要跑，觸發條件見 Vault plan「未來（重量版觸發前提 checklist）」段——golden-set 填完 / preference pair ≥5K / Tier-A corpus 到 dozens scale 等，本輪皆未滿足。

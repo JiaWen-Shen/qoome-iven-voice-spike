@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "technique": "輕量版（pretrained cosine，no fine-tuning）",
+    "positive_corpus": "seeds/eval_set.json iven_tier_a (n=6)",
+    "negative_corpus": "seeds/eval_set.json slop (n=5)",
+    "held_out_n_pairs": 10,
+    "held_out_n_texts": 20,
+    "held_out_topics_overlap_with_corpus": false,
+    "exit_criterion": "AUROC > 0.75",
+    "auroc": 0.47,
+    "passed": false
+  },
+  "per_item": [
+    {
+      "topic_id": "p1",
+      "version": "v1",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6018,
+      "sim_to_slop": 0.6247,
+      "score": -0.023
+    },
+    {
+      "topic_id": "p1",
+      "version": "v1",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.5902,
+      "sim_to_slop": 0.6139,
+      "score": -0.0237
+    },
+    {
+      "topic_id": "p2",
+      "version": "v1",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6381,
+      "sim_to_slop": 0.6093,
+      "score": 0.0288
+    },
+    {
+      "topic_id": "p2",
+      "version": "v1",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.5985,
+      "sim_to_slop": 0.4783,
+      "score": 0.1203
+    },
+    {
+      "topic_id": "p3",
+      "version": "v1",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.4477,
+      "sim_to_slop": 0.5201,
+      "score": -0.0724
+    },
+    {
+      "topic_id": "p3",
+      "version": "v1",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.6004,
+      "sim_to_slop": 0.5549,
+      "score": 0.0456
+    },
+    {
+      "topic_id": "p1_v2",
+      "version": "v2",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.5512,
+      "sim_to_slop": 0.5383,
+      "score": 0.0129
+    },
+    {
+      "topic_id": "p1_v2",
+      "version": "v2",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.4804,
+      "sim_to_slop": 0.4769,
+      "score": 0.0034
+    },
+    {
+      "topic_id": "p2_v2",
+      "version": "v2",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6174,
+      "sim_to_slop": 0.5025,
+      "score": 0.1149
+    },
+    {
+      "topic_id": "p2_v2",
+      "version": "v2",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.559,
+      "sim_to_slop": 0.4898,
+      "score": 0.0693
+    },
+    {
+      "topic_id": "p3_v2",
+      "version": "v2",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.512,
+      "sim_to_slop": 0.3509,
+      "score": 0.1611
+    },
+    {
+      "topic_id": "p3_v2",
+      "version": "v2",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.5131,
+      "sim_to_slop": 0.3769,
+      "score": 0.1362
+    },
+    {
+      "topic_id": "p1_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.5225,
+      "sim_to_slop": 0.5111,
+      "score": 0.0114
+    },
+    {
+      "topic_id": "p1_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.605,
+      "sim_to_slop": 0.6029,
+      "score": 0.0021
+    },
+    {
+      "topic_id": "p2_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.6029,
+      "sim_to_slop": 0.5229,
+      "score": 0.08
+    },
+    {
+      "topic_id": "p2_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.6239,
+      "sim_to_slop": 0.6149,
+      "score": 0.009
+    },
+    {
+      "topic_id": "p3_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.5917,
+      "sim_to_slop": 0.4749,
+      "score": 0.1167
+    },
+    {
+      "topic_id": "p3_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.6247,
+      "sim_to_slop": 0.4809,
+      "score": 0.1438
+    },
+    {
+      "topic_id": "p4_v3",
+      "version": "v3",
+      "mode": "real",
+      "sim_to_iven_tier_a": 0.5549,
+      "sim_to_slop": 0.4391,
+      "score": 0.1158
+    },
+    {
+      "topic_id": "p4_v3",
+      "version": "v3",
+      "mode": "naive_prof",
+      "sim_to_iven_tier_a": 0.604,
+      "sim_to_slop": 0.4584,
+      "score": 0.1456
+    }
+  ]
+}
