@@ -1,5 +1,3 @@
-<!-- Auto-generated from CLAUDE.md by scripts/claude-to-agents.mjs on 2026-08-25. -->
-<!-- Hook-triggered sections removed (no Codex equivalent) -- see below if any were stripped. Review before relying on it. -->
 # qoome-iven-voice-spike — Project Context
 
 離線 spike：驗證「改寫 → gate → 退件重寫 → 回收」核心迴圈，探索 Iven voice 的可 clone 邊界。**不碰 n8n、不碰編輯台 UI、不接 production**。
