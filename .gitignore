@@ -3,3 +3,4 @@
 __pycache__/
 *.pyc
 .claude_review_state.json
+.claude/
